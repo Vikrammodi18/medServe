@@ -50,11 +50,29 @@ const login = asyncHandler(async(req,res)=>{
     if(!checkPassword){
         throw new ApiError(403,"password is incorrect")
     }
-
+    const refreshToken = await isUserAlreadyRegistered.generateRefreshToken();
+    const accessToken = await isUserAlreadyRegistered.generateAccessToken();
+    isUserAlreadyRegistered.refreshToken = refreshToken
+    isUserAlreadyRegistered.save({validateBeforeSave:false})
+    const loggedInUser = await User.findById(isUserAlreadyRegistered._id).select("-refreshToken -password")
+    const options={
+        httpOnly:true,
+        secure:false,
+        maxAge:7*24*60*60*1000 //max age of cookies is 7 day
+    }
     return res
     .status(200)
+    .cookie("accessToken",accessToken,options)
+    .cookie("refreshToken",refreshToken,options)
     .json(
-        new ApiResponse(200,{isUserAlreadyRegistered},"successfully logged in")
+        new ApiResponse(
+            200,
+            {data:loggedInUser,
+                accessToken,
+                refreshToken
+            },
+            "successfully logged in"
+        )
     )
 })
 module.exports = {
