@@ -4,27 +4,30 @@ const User = require("../models/user.model")
 const ApiResponse = require("../utils/ApiResponse")
 
 const registerUser = asyncHandler(async (req,res)=>{
-    const {email,password,username,contact} =req.body;
-
+    
+    const {email,password,username,contact} = req.body;
     //validate all the required field
     if([email,password,username,contact].some((field)=> !field || field.trim()==="")){
         throw new ApiError(400,"all fields are required")
     }
-
+   
     //checking user already registered or not
     const isUserAlreadyRegistered = await User.findOne({email})
+    
     if(isUserAlreadyRegistered){
         throw new ApiError(400,"user already registered")
     }
+   
     // registered new User
-    const registeredUser = await User({
-        email:email.trim(),
-        password:password.trim(),
-        contact:contact.trim(),
-        username:username.trim(),
+    const registeredUser =  User({
+        email:email,
+        password:password,
+        contact:contact,
+        username:username,
 
     })
     const user = await registeredUser.save()
+    console.log(user)
     return res
     .status(200)
     .json(
