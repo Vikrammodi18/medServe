@@ -53,11 +53,14 @@ const login = asyncHandler(async(req,res)=>{
     if(!checkPassword){
         throw new ApiError(403,"password is incorrect")
     }
-    const refreshToken = await isUserAlreadyRegistered.generateRefreshToken();
-    const accessToken = await isUserAlreadyRegistered.generateAccessToken();
-    isUserAlreadyRegistered.refreshToken = refreshToken
-    isUserAlreadyRegistered.save({validateBeforeSave:false})
-    const loggedInUser = await User.findById(isUserAlreadyRegistered._id).select("-refreshToken -password")
+    const refreshToken = isUserAlreadyRegistered.generateRefreshToken();
+    const accessToken =  isUserAlreadyRegistered.generateAccessToken();
+    console.log(refreshToken,accessToken)
+    const user = await User.findById(isUserAlreadyRegistered._id).select("-password")
+    console.log(user)
+    user.refreshToken = refreshToken
+    const loggedInUser = await user.save({validateBeforeSave:false})
+    
     const options={
         httpOnly:true,
         secure:false,

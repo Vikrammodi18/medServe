@@ -52,8 +52,8 @@ userSchema.methods.generateRefreshToken = function(){
         username:this.username,
         email:this.email,
         contact:this.contact
-    },process.env.REFRESH_TOKEN_SECRET),
-    {expiresIn:process.env.REFRESH_TOKEN_EXPIRY}
+    },process.env.REFRESH_TOKEN_SECRET,
+    {expiresIn:process.env.REFRESH_TOKEN_EXPIRY})
 }
 
 const User = mongoose.model("User",userSchema)
