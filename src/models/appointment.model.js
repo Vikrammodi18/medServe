@@ -5,10 +5,18 @@ const appointmentSchema = Schema({
         type: Schema.Types.ObjectId,
         ref:"Doctor"
     },
-    // patient:{
-    //     type: new Schema.Types.ObjectId,
-    //     ref:"User"
-    // },
+    user:{
+        type: Schema.Types.ObjectId,
+        ref:"User"
+    },
+    patientName:{
+        type:String,
+        required:true
+    },
+    patientAge:{
+        type:Number,
+        required:true
+    },
     appointmentDateTime:{
         type:Date,
         required:true
