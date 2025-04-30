@@ -20,6 +20,11 @@ const appointmentSchema = Schema({
     appointmentDateTime:{
         type:Date,
         required:true
+    },
+    status:{
+        type:String,
+        enum:["padding","confirmed","cancelled"],
+        default:"padding"
     }
 },{timestamps:true})
 

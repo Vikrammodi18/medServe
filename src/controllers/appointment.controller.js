@@ -17,7 +17,7 @@ const takeAppointment = asyncHandler(async(req,res)=>{
     console.log(date,time)
     const dateTime =  new Date(`${date}T${time}`)
     console.log(dateTime)
-    const isAvailableAppointmentTime = await Appointment.findOne({appointmentDateTime:dateTime})
+    const isAvailableAppointmentTime = await Appointment.findOne({appointmentDateTime:dateTime,doctor:doctorId})
     
     if(isAvailableAppointmentTime){
         throw new ApiError(402,"already taken appointment by other ")
@@ -74,8 +74,30 @@ const getAppointmentDetails = asyncHandler(async(req,res)=>{
     )
 
 })
+const confirmOrCancelAppointment = asyncHandler(async(req,res)=>{
+    const{status} = req.body
+    const{appointmentId} = req.params
+    const checkStatus = ["confirmed","cancelled"]
+    if(! checkStatus.includes(status)){
+        throw new ApiError(400,"invalid staus")
+    }
+    const updateStatus = await Appointment.findOneAndUpdate({_id:appointmentId},{
+        $set:{
+            status:status
+        }
+    })
+    if(!updateStatus){
+        throw new ApiError(404,"no appointment found")
+    }
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,updateStatus,"appointment confirmed:")
+    )
+})
 
 module.exports = {
     takeAppointment,
     getAppointmentDetails,
+    confirmOrCancelAppointment,
 }

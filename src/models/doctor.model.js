@@ -45,6 +45,7 @@ doctorSchema.methods.isPasswordCorrect = async function(password){
 
 doctorSchema.methods.generateAccessToken = async function(){
     return jwt.sign({
+        _id:this._id,
         doctorName : this.doctorName,
         specialisation: this.specialisation,
         password: this.password
