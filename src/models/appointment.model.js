@@ -23,8 +23,8 @@ const appointmentSchema = Schema({
     },
     status:{
         type:String,
-        enum:["padding","confirmed","cancelled"],
-        default:"padding"
+        enum:["pending","confirmed","cancelled"],
+        default:"pending"
     }
 },{timestamps:true})
 

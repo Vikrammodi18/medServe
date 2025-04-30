@@ -9,5 +9,5 @@ const{
 
 router.route("/:doctorId/takeAppointment").post(verifyJWT,takeAppointment)
 router.route("/getAppoitmentDetails").post(verifyJWTdoctor,getAppointmentDetails)
-router.route("/status/:appointmentId").post(confirmOrCancelAppointment)
+router.route("/status/:appointmentId").post(verifyJWTdoctor,confirmOrCancelAppointment)
 module.exports = router

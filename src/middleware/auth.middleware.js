@@ -27,7 +27,7 @@ const verifyJWTdoctor = asyncHandler(async(req,res,next)=>{
     }
     const verifyToken = await jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
     const doctor = await Doctor.findById(verifyToken._id)
-    if(doctor){
+    if(!doctor){
         throw new ApiError(404,"un registered doctor")
     }
     req.doctor = doctor
