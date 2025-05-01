@@ -78,8 +78,13 @@ const loginDoctor = asyncHandler(async (req,res)=>{
         )
     )
 })
+const getAllDoctor = asyncHandler(async(req,res)=>{
 
+    const doctors = await Doctor.find()
+    console.log(doctors)
+})
 module.exports = {
     registerDoctor,
-    loginDoctor
+    loginDoctor,
+    getAllDoctor
 }
