@@ -80,8 +80,12 @@ const loginDoctor = asyncHandler(async (req,res)=>{
 })
 const getAllDoctor = asyncHandler(async(req,res)=>{
 
-    const doctors = await Doctor.find()
-    console.log(doctors)
+    const doctors = await Doctor.find().select("-password -refreshToken")
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,doctors,"all doctor's data fetched successfully")
+    )
 })
 module.exports = {
     registerDoctor,
