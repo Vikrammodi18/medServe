@@ -20,6 +20,7 @@ const verifyJWT = async(req,res,next)=>{
   req.user = user
    next()
 }
+
 const verifyJWTdoctor = asyncHandler(async(req,res,next)=>{
     const token = req.cookies?.accessToken
     if(!token){

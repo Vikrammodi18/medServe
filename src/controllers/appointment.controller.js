@@ -66,7 +66,7 @@ const getAppointmentDetails = asyncHandler(async(req,res)=>{
             }
 
     })
-    console.log(appointmentDate)
+    
     if(!appointmentDate){
         throw new ApiError(404,"no appointment scheduled")
     }
@@ -93,22 +93,22 @@ const confirmOrCancelAppointment = asyncHandler(async(req,res)=>{
     )
     if(updateStatus.status === "confirmed"){
         const appointment = await Appointment.findById(new mongoose.Types.ObjectId(appointmentId)).populate('doctor').populate('user')
-        // console.log(appointment)
+        
         const transporter = nodemailer.createTransport({
             service: "gmail", // or any other
             auth: {
-              user: "modivikram18@gmail.com",
+              user: "mediserve.jru@gmail.com",
               pass: process.env.PASSWORD
             }
           });
           const mailOptions = {
-            from: "modivikram18@gmail.com",
-            to: "mediserve.jru@gmail.com",
+            from: "mediserve.jru@gmail.com",
+            to: `${appointment.user.email}`,
             subject: "Your Appointment is Confirmed ✅",
             html: `
-              <h3>Hi ${appointment.user.name},</h3>
-                <p><strong>Patient Name:</strong> ${patientName}</p>
-                <p><strong>Patient Age:</strong> ${patientAge}</p>
+              <h3>Hi ${appointment.user.username},</h3>
+                <p><strong>Patient Name:</strong> ${appointment.patientName}</p>
+                <p><strong>Patient Age:</strong> ${appointment.patientAge}</p>
               <p>Your appointment has been <strong>confirmed</strong> by <strong>${appointment.doctor.doctorName}</strong>.</p>
               <p><strong>Appointment Fee:</strong> ₹${appointment.doctor.appointmentFee}</p>
               <p><strong>Visit Date & Time:</strong> ${new Date(appointment.appointmentDateTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</p>
@@ -119,8 +119,8 @@ const confirmOrCancelAppointment = asyncHandler(async(req,res)=>{
             `
           };
         
-         const response = await transporter.sendMail(mailOptions);
-         console.log(response)
+         await transporter.sendMail(mailOptions);
+         
 
     }
     if(!updateStatus){
