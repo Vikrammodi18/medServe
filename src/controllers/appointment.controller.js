@@ -117,11 +117,37 @@ const confirmOrCancelAppointment = asyncHandler(async(req,res)=>{
               <p>Thanks,</p>
               <p>MEDI SERVE Clinic Team</p>
             `
-          };
+          }
         
          await transporter.sendMail(mailOptions);
          
 
+    }else if(updateStatus.status === "cancelled"){
+          const appointment = await Appointment.findById(new mongoose.Types.ObjectId(appointmentId)).populate('doctor').populate('user')
+        const transporter = nodemailer.createTransport({
+            service: "gmail", // or any other
+            auth: {
+              user: "mediserve.jru@gmail.com",
+              pass: process.env.PASSWORD
+            }
+          });
+          const mailOptions = {
+                from: "mediserve.jru@gmail.com",
+                to: `${appointment.user.email}`,
+                subject: "Appointment Cancelled: Doctor Unavailable ❌",
+                html: `
+                    <h3>Hi ${appointment.user.username},</h3>
+                    <p>We regret to inform you that your appointment has been <strong>cancelled</strong> due to the unavailability of <strong>Dr. ${appointment.doctor.doctorName}</strong>.</p>
+                    <p><strong>Patient Name:</strong> ${appointment.patientName}</p>
+                    <p><strong>Patient Age:</strong> ${appointment.patientAge}</p>
+                    <p><strong>Originally Scheduled Date & Time:</strong> ${new Date(appointment.appointmentDateTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</p>
+                    <p>We apologize for the inconvenience caused. You may reschedule your appointment at your convenience through our platform.</p>
+                    <br />
+                    <p>Thanks,</p>
+                    <p>MEDI SERVE Clinic Team</p>
+                `
+            };
+            await transporter.sendMail(mailOptions)
     }
     if(!updateStatus){
         throw new ApiError(404,"no appointment found")
