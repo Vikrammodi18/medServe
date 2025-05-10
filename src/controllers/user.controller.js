@@ -55,7 +55,7 @@ const login = asyncHandler(async(req,res)=>{
     }
     const refreshToken = isUserAlreadyRegistered.generateRefreshToken();
     const accessToken =  isUserAlreadyRegistered.generateAccessToken();
-    console.log(refreshToken,accessToken)
+    
     const user = await User.findById(isUserAlreadyRegistered._id).select("-password")
     
     user.refreshToken = refreshToken

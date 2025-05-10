@@ -37,7 +37,18 @@ const uploadMedicine = asyncHandler(async(req,res)=>{
 
 
 })
+const getAllMedicine = asyncHandler(async(req,res)=>{
+    
+    const allMedicine = await Medicine.find({})
+    console.log("allMedicine",allMedicine)
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,allMedicine,"all medicine fetched Successfully")
+    )
 
+})
 module.exports = {
-    uploadMedicine
+    uploadMedicine,
+    getAllMedicine
 }
