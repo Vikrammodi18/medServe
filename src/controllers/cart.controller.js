@@ -52,7 +52,23 @@ const getCart = asyncHandler(async(req,res)=>{
         )
     }
 })
+const deleteItem = asyncHandler(async(req,res)=>{
+    const {medicineId} = req.body
+    const userId = req.user?._id
+    const cart = await Cart.findOne({userId})
+    const refreshCart = cart.items.filter((val)=> !val.medicine.equals(new mongoose.Types.ObjectId(medicineId)) )
+    
+    cart.items = refreshCart
+    await cart.save()
+    
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,{},"item deleted successfully")
+    )
+})
 module.exports = {
     addToCart,
-    getCart
+    getCart,
+    deleteItem
 }
