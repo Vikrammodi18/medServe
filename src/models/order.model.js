@@ -30,8 +30,12 @@ const orderSchema = new Schema({
         }
     ],
     orderDate:{
-        type: Date,
-      
+        type: Date, 
+    },
+    orderState:{
+        type:String,
+        enum:["pending","on the way","delivered"],
+        default:"pending"
     }
 })
 

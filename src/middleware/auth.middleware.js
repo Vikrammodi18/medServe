@@ -34,4 +34,12 @@ const verifyJWTdoctor = asyncHandler(async(req,res,next)=>{
     req.doctor = doctor
     next()
 })
+// const verifyJWTAdmin = asyncHandler(async(req,res,next)=>{
+//   const token = req.cookies?.accessToken
+//   if(!token){
+//     throw new ApiError(404,"unauthorised access")
+
+//   }
+//   const admin = await
+// })
 module.exports = {verifyJWT,verifyJWTdoctor}
