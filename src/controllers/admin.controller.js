@@ -4,9 +4,14 @@ const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 
 const registerAdmin = asyncHandler(async(req,res)=>{
-    const {email,password} = req.body
+    const {email,password,username} = req.body
     if([email,password,username].some((field)=> !field|| field.trim()==="")){
         throw new ApiError(400,"email and password is required")
+    }
+    const alreadyRegistered = await Admin.findOne({email})
+    console.log("alreadyRegistered",alreadyRegistered)
+    if(alreadyRegistered){
+        throw new ApiError(400,"admin already registered")
     }
     const admin = await Admin.create({
         email,

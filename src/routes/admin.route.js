@@ -5,3 +5,5 @@ const router = Router()
 
 router.route("/registerAdmin").post(registerAdmin)
 router.route("/loginAdmin").post(loginAdmin)
+
+module.exports = router

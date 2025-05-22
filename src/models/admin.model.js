@@ -1,5 +1,7 @@
 
 const {mongoose,Schema} = require("mongoose")
+const bcrypt = require("bcrypt")
+const jwt= require("jsonwebtoken")
 const adminSchema = new Schema({
     email:{
         type:String,
