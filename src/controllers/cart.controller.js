@@ -2,6 +2,8 @@ const asyncHandler = require("../utils/asyncHandler");
 const Cart = require("../models/cart.model.js");
 const ApiResponse = require("../utils/ApiResponse.js");
 const mongoose = require("mongoose")
+
+//controllers for add to cart
 const addToCart = asyncHandler(async(req,res)=>{
     const{medicineId} = req.body
     if([medicineId].some((field)=> !field || field.trim()==="")){
@@ -9,6 +11,9 @@ const addToCart = asyncHandler(async(req,res)=>{
     }
     const userId = req.user?._id
     const cart = await Cart.findOne({userId:userId})
+    //checking if cart is already present then add medicine
+    // if selected medicine already in cart then increase quantity by 1
+    // if cart is not present then create a new cart and add medicine
     if (cart){
         const itemIndex = cart.items.findIndex( (item) => item.medicine.equals(new mongoose.Types.ObjectId(medicineId)));
         
