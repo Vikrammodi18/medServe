@@ -40,7 +40,6 @@ const uploadMedicine = asyncHandler(async(req,res)=>{
 const getAllMedicine = asyncHandler(async(req,res)=>{
     
     const allMedicine = await Medicine.find({})
-    console.log("allMedicine",allMedicine)
     return res
     .status(200)
     .json(
