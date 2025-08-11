@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cors({
     credentials:true,
-    origin:"http://localhost:3000"
+    origin:["http://localhost:3000","http://localhost:3001","http://localhost:3002"]
 }))
 
 const userRouter = require("./src/routes/user.route")
@@ -18,6 +18,9 @@ const medicineRouter = require('./src/routes/medicine.route')
 const cartRouter = require("./src/routes/cart.route")
 const orderRouter = require("./src/routes/order.route")
 const adminRouter = require("./src/routes/admin.route")
+// const ambulanceBookingRouter = require("./src/routes/ambulanceBooking.route");
+
+// app.use("/api/v1/ambulance", ambulanceBookingRouter);
 app.use("/api/v1/users",userRouter)
 app.use("/api/v1/doctors",doctorRouter)
 app.use("/api/v1/appointments",appointmentRouter)

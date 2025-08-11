@@ -7,14 +7,20 @@ const mongoose = require('mongoose')
 const Medicine = require("../models/medicine.model")
 
 const placedOrder = asyncHandler(async(req,res)=>{
+    
     const {userName,totalAmount,address} = req.body
-    const userId = req.user?._id
-    if([userName,totalAmount,address].some((val)=> !val || val.trim()==="")){
-        throw new ApiError(400,"required fields")
-    }
+    // console.log(req)
+    const userId = req.user._id
+    
+
+    console.log("hello from placed order");
+   
+    // if([userName,totalAmount,address].some((val)=> !val || val.trim()==="")){
+    //     throw new ApiError(400,"required fields")
+    // }
    
     const cart = await Cart.findOne({userId}).populate({path:"items.medicine"})
-   
+    console.log(cart)
     if(!cart || cart.items.length ===0){
         throw new ApiError(400,"Cart is empty")
     }
@@ -61,6 +67,7 @@ const placedOrder = asyncHandler(async(req,res)=>{
 })
 const getOrderDetails = asyncHandler(async (req,res)=>{
     const userId = req.user?._id
+    
     const totalOrder = await Order.find({userId}).populate({path:"items.medicine",select:"-stock"})
     return res
     .status(200)
